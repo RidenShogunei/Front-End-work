@@ -1,55 +1,107 @@
 <template>
     <div class="main">
-        <el-card class="box-card">
-            <div class="avatar">
-                <el-avatar :size="200" :src="require('../assets/me.jpg')" />
-            </div>
-            <h1>姓名: 陈瑾旭</h1>
-            <h1>学校：同济大学</h1>
-            <h1>专业：软件工程</h1>
-            <h1>兴趣爱好：编程，阅读，足球</h1>
-            <h1>联系方式：13870105832</h1>
-            <h1>个人简介：对新技术充满热情，善于解决问题，具有良好的团队合作精神。</h1>
-        </el-card>
+        <div class="box-card">
+            <div class="word">please take this as my self thought,I,just fail too many times and I am a little
+                I don't know what to say now you konw.Maybe it is better for me to just keep going,so,I make this
+                website
+                to just make a record my life ,yes ,just a kind of record.<br> <span class="wordchange" @click="start">NOW WE CAN
+                    START=====></span></div>
+
+        </div>
     </div>
 </template>
 
 <script>
-
+export default{
+    methods:{
+        start(){
+            this.$router.push('/detile');
+        }
+    }
+}
 </script>
 
 <style>
 .main {
+    height: 100vh;
+    /* 或者 100% */
     background-image: url('../assets/lrosrick.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 添加垂直居中 */
+    overflow: hidden;
+    /* 隐藏滚动条 */
 }
 
 .box-card {
-    width: 500px;
-    height: 700px;
-    background-color: rgba(121, 134, 10, 0.033);
-    position: relative;
-    top: 10px;
-    left: 20px;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.avatar {
+    height: 50%;
+    width: 50%;
+    background-color: rgba(139, 41, 41, 0.5);
     display: flex;
     justify-content: center;
+    align-items: center;
+    /* 添加垂直居中 */
+    padding: 20px 20px;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    /* 添加背景色过渡效果 */
 }
 
+.word {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    color: rgb(15, 13, 13);
+    font-size: 40px;
+}
 
-h1, h2, h3, h4 {
-    margin: 10px 0;
-    color: rgb(222, 230, 220)
+.wordchange {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    color: rgb(15, 13, 13);
+    font-size: 40px;
+    opacity: 0;
+    /* 设置初始透明度为 0 */
+    transition: opacity 0.5s ease-in-out;
+    /* 添加透明度的过渡效果 */
+}
+
+:hover.box-card {
+    height: 50%;
+    width: 50%;
+    background-color: rgba(139, 41, 41, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 添加垂直居中 */
+    padding: 20px 20px;
+}
+
+:hover.word {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    color: rgb(15, 13, 13, 0);
+    font-size: 40px;
+}
+
+:hover.wordchange {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    color: rgb(255, 0, 0);
+    font-size: 40px;
+    opacity: 1;
+    /* 设置初始透明度为 0 */
+    transition: opacity 0.5s ease-in-out;
+    /* 添加透明度的过渡效果 */
 }
 </style>

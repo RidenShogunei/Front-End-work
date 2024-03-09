@@ -17,6 +17,8 @@ export default {
 </script>
 
 <style>
+
+
 .home {
   /* 之前的样式不变 */
   background-image: url('../assets/background.jpg');

@@ -12,7 +12,12 @@ const routes = [
     path: '/mainpage',
     name: 'mainpage',
     component: () => import('../views/mainPage.vue')
-  }
+  },
+  {
+    path: '/detile',
+    name: 'detile',
+    component: () => import('../views/detilePage.vue')
+  },
 
 ]
 
