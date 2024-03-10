@@ -14,11 +14,20 @@ const routes = [
     component: () => import('../views/mainPage.vue')
   },
   {
-    path: '/detile',
-    name: 'detile',
-    component: () => import('../views/detilePage.vue')
+    path: '/navigate',
+    name: 'navigate',
+    component: () => import('../views/navigatePage.vue')
   },
-
+  {
+    path: '/music',
+    name: 'music',
+    component: () => import('../views/musicPage.vue')
+  },
+  {
+    path: '/learn',
+    name: 'learn',
+    component: () => import('../views/learnPage.vue')
+  },
 ]
 
 const router = createRouter({

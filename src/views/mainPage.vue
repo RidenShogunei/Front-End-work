@@ -15,26 +15,30 @@
 export default{
     methods:{
         start(){
-            this.$router.push('/detile');
+            this.$router.push('/navigate');
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .main {
-    height: 100vh;
-    /* 或者 100% */
-    background-image: url('../assets/lrosrick.jpg');
+    /* 之前的样式不变 */
+    background-image: url('../assets/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* 使用 flexbox 将内容居中 */
     display: flex;
-    justify-content: center;
     align-items: center;
-    /* 添加垂直居中 */
-    overflow: hidden;
-    /* 隐藏滚动条 */
+    justify-content: center;
+    /* flex-direction 为 column 可以使 h1 和 h2 垂直排列 */
+    flex-direction: column;
 }
 
 .box-card {
@@ -55,7 +59,7 @@ export default{
     /* 设置字体为 Times New Roman */
     font-style: italic;
     /* 设置字体样式为斜体 */
-    color: rgb(15, 13, 13);
+    color: rgb(255, 255, 255);
     font-size: 40px;
 }
 
