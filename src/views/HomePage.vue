@@ -1,24 +1,44 @@
 <template>
-    <div class="home" @click="navigate">
-        <h1>Welcome to my website</h1>
-        <h2>Press anywhere to enter</h2>
-    </div>
+  <div class="home" @click="navigate">
+    <h1>{{ message }}</h1>
+    <div v-if="loading">Loading...</div> <!-- 加载指示器 -->
+    <h2>Press anywhere to enter</h2>
+  </div>
 </template>
 
 <script>
 export default {
-    methods: {
-        navigate() {
-            // 跳转
-            this.$router.push('/mainpage');
-        }
+  data() {
+    return {
+      message: '',
+      loading: true, // 添加这一行
+    };
+  },
+  methods: {
+    navigate() {
+      // 跳转
+      this.$router.push('/mainpage');
     }
-}
+  },
+  created() {
+    // 在组件创建时执行的逻辑
+    this.$axios.get('https://api.uomg.com/api/rand.qinghua')
+      .then(response => {
+        // 处理返回的数据
+        console.log(response.data);
+        this.message=response.data.content;
+        this.loading = false;  // 
+      })
+      .catch(error => {
+        // 处理错误
+        this.loading = false;  // 
+        console.error(error);
+      });
+  }
+};
 </script>
 
 <style>
-
-
 .home {
   /* 之前的样式不变 */
   background-image: url('../assets/background.jpg');
@@ -41,7 +61,7 @@ export default {
 }
 
 .home h1 {
-  font-size: 4em;
+  font-size: 3em;
   color: aliceblue;
   /* 为 h1 添加底部边距 */
   margin-bottom: 20px;
