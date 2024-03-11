@@ -1,46 +1,177 @@
 <template>
-    <div class="learn" >
-        
+  <div class="learn">
+    <div class="cleanbook">
+      <div class="title">一本每次储存50个字的书</div>
+      <textarea class="change" type="text" maxlength="50" v-model="text"></textarea>
+      <div class="num">目前的字数:{{ number }}</div>
+      <div class="button"> <el-button size="large" @click="show">{{ this.mode }}</el-button>
+        <el-button size="large" type="primary" @click="store">保存</el-button>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-      };
-    },
-    methods: {
-      navigate() {
-        // 跳转
-        this.$router.push('/mainpage');
+    <div class="log" v-if="this.look === true">
+      <div class="content" v-for="(log, index) in logs" :key="index">
+        <div> {{ log.text }} by the time {{ log.time }}</div>
+        <el-button size="large" type="danger" @click="deleteitem(index)">删除本条</el-button>
+      </div>
+      <br>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      text: '',
+      look: false,
+      logs: [],
+      num: 0,
+      mode:'过往'
+    };
+  },
+  methods: {
+   /* clean() {
+      let arr = this.logs.filter((element, index, self) => {
+        return self.indexOf(element) === index;
+      });
+      this.logs=arr;
+      console.log("去重了之后的logs"+this.logs)
+    },*/
+    deleteitem(index){
+    console.log(index);
+  },
+    getLogs() {
+      this.look = true;
+      this.logs= []
+      for (let i = 0; i < this.num; i++) {
+        let savedata = JSON.parse(localStorage.getItem(i));
+        this.logs.push(savedata);
       }
     },
-    created() {
-    
+    show() {
+      this.look = true;
+      this.mode='关闭';
+      this.getLogs();
+    },
+    close() {
+      this.look = false;
+      this.mode='过往'
+    },
+    store() {
+      const timeNow = new Date().toLocaleString(); // 获取当前时间
+      const savedText = {
+        text: this.text,            // 存储文本
+        time: timeNow               // 存储时间
+      };
+      localStorage.setItem(this.num, JSON.stringify(savedText)); // 将对象保存到localStorage
+      this.text = '';
+      this.num++;
+      localStorage.setItem('num', JSON.stringify(this.num));
+      if(this.look===true){
+        this.getLogs();
+      }
+    },
+    getnum() {
+      let savenum = localStorage.getItem('num');
+      if (savenum) {
+        savenum = JSON.parse(savenum);
+        this.num = savenum;
+        console.log("now have storage " + this.num);
+      } else {
+        localStorage.setItem('num', JSON.stringify(this.num));
+        console.log("now we don't have");
+      }
     }
-  };
-  </script>
-  
-  <style scoped>
-  .home {
-    /* 之前的样式不变 */
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    /* 使用 flexbox 将内容居中 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* flex-direction 为 column 可以使 h1 和 h2 垂直排列 */
-    flex-direction: column;
+  },
+  created() {
+    this.getnum();
+  },
+  computed: {
+    number() {
+      return this.text.length;
+    }
   }
-  
+};
+</script>
 
-  </style>
+<style scoped>
+.learn {
+  /* 之前的样式不变 */
+  background-image: url('../assets/learn.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.cleanbook {
+  width: 40%;
+  height: 40%;
+  background-color: bisque;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.title {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 40px;
+}
+
+.change {
+  width: 80%;
+  height: 60%;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 40px;
+}
+
+.num {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 20px;
+}
+
+.button {
+  display: flex;
+  /* 设置为弹性布局 */
+  justify-content: space-between;
+  /* 水平方向上的对齐方式 */
+  align-items: center;
+  /* 垂直方向上的对齐方式 */
+  width: 40%;
+  /* 设置容器宽度，影响按钮间距离 */
+  margin: auto;
+  /* 让容器在父元素中居中 */
+}
+
+.content {
+  width: 90%;
+  height: 90%;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid;
+  padding: 10px;
+
+}
+
+.log {
+  width: 40%;
+  background-color: bisque;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+</style>
