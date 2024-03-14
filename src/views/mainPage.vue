@@ -1,10 +1,8 @@
 <template>
     <div class="main">
         <div class="box-card">
-            <div class="word">please take this as my self thought,I,just fail too many times and I am a little
-                I don't know what to say now you konw.Maybe it is better for me to just keep going,so,I make this
-                website
-                to just make a record my life ,yes ,just a kind of record.<br> <span class="wordchange" @click="start">NOW WE CAN
+            <div class="word"><br>欢迎,朋友!既然你访问了这个网站,那代表着,你收到了我的邀请.总之,这个网站是个我空闲时间写着玩的
+                项目,可能会有些bug,不过我在慢慢的完善它.所以,敬请期待!<br> <span class="wordchange" @click="start">NOW WE CAN
                     START=====></span></div>
 
         </div>
@@ -12,9 +10,9 @@
 </template>
 
 <script>
-export default{
-    methods:{
-        start(){
+export default {
+    methods: {
+        start() {
             this.$router.push('/navigate');
         }
     }

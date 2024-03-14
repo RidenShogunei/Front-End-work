@@ -49,14 +49,12 @@ export default {
       }
     },
     show() {
-      this.look = true;
-      this.mode='关闭';
+    this.look = !this.look;  // 简单地翻转 this.look 的值
+    this.mode = this.look ? '关闭' : '过往';  // 根据 this.look 的值来设定 this.mode
+    if (this.look) {  // 如果 this.look 是 true，那么获取 logs
       this.getLogs();
-    },
-    close() {
-      this.look = false;
-      this.mode='过往'
-    },
+    }
+  },
     store() {
       const timeNow = new Date().toLocaleString(); // 获取当前时间
       const savedText = {

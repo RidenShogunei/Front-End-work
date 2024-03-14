@@ -14,7 +14,9 @@
             <br>
         </div>
         <div class="list">
-    
+            <div v-for="(song, index) in musiclist" :key="index" class="musicname" @click="changesong(index)">
+                <p>{{ song.name }}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -25,24 +27,53 @@ import interact from 'interactjs';
 export default {
     data() {
         return {
-            musicurl: '',
-            pictureurl: '',
+            musiclist: [{
+                musicurl: '',
+                pictureurl: '',
+                name: '',
+            }],
             name: '',
+            pictureurl: '',
+            musicurl: '',
         }
     },
     methods: {
+        changesong(index) {
+            this.name = this.musiclist[index].name;
+            this.pictureurl = this.musiclist[index].pictureurl;
+            this.musicurl =this.musiclist[index].musicurl;
+        },
+        fresh(music) {
+            this.$store.commit('changemusiclist', music);
+            if (music.length > 0) {
+                this.name = music[0].name;
+                this.pictureurl = music[0].pictureurl;
+                this.musicurl = music[0].musicurl;
+            }
+            console.log(this.$store.state.musiclist);
+        },
         takesong() {
-            axios.get('https://api.uomg.com/api/rand.music?sort=热歌榜&format=json')
-                .then(response => {
-                    console.log(response.data.data);
-                    this.musicurl = response.data.data.url;
-                    this.pictureurl = response.data.data.picurl;
-                    this.name = response.data.data.name;
-                    console.log(this.musicurl)
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            this.musiclist = [];
+            let requests = []; // 存放所有请求的数组
+
+            for (let i = 0; i < 10; i++) {
+                let request = axios.get('https://api.uomg.com/api/rand.music?sort=热歌榜&format=json')
+                    .then(response => {
+                        let song = {
+                            musicurl: response.data.data.url,
+                            pictureurl: response.data.data.picurl,
+                            name: response.data.data.name,
+                        };
+                        this.musiclist.push(song);// 将音乐信息加入到 musiclist 中
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                requests.push(request); // 将请求添加到请求列表中
+            }
+
+            Promise.all(requests) // 当所有请求都完成时
+                .then(() => this.fresh(this.musiclist)); // 执行更新操作
         },
         setDraggable() {
             interact('.music').draggable({
@@ -146,11 +177,34 @@ export default {
     /* 添加自动外边距 */
 }
 
-.list{
+.list {
     height: 40%;
     width: 20%;
     background-color: brown;
     opacity: 0.8;
     padding-bottom: 10px;
+    overflow-y: scroll;
+}
+
+.musicname {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    font-size: 25px;
+    color: #000000;
+    margin: 10px 20px;
+    text-align: center;
+    transition: background-color 0.5s ease, font-size 0.5s ease, margin 0.5s ease;
+    /* 添加了逗号 */
+}
+
+.musicname:hover {
+    /* 修改为正确的hover选择器 */
+    font-size: 30px;
+    color: #b0a6a6;
+    margin: 0 10px;
+    text-align: center;
+    background-color: red;
 }
 </style>
