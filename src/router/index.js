@@ -33,6 +33,11 @@ const routes = [
     name: 'animation',
     component: () => import('../views/animationPage.vue')
   },
+  {
+    path: '/game',
+    name: 'game',
+    component: () => import('../views/gamePage.vue')
+  },
 ]
 
 const router = createRouter({

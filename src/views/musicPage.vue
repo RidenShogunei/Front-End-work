@@ -13,6 +13,9 @@
             </audio>
             <br>
         </div>
+        <div class="list">
+    
+        </div>
     </div>
 </template>
 
@@ -90,20 +93,19 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    /* 使用 flexbox 将内容居中 */
     display: flex;
     align-items: center;
     justify-content: center;
-    /* flex-direction 为 column 可以使 h1 和 h2 垂直排列 */
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .music {
-    height: 30%;
+    height: 40%;
     width: 30%;
     background-color: brown;
     opacity: 0.8;
     padding-bottom: 10px;
+    margin: 10px;
 }
 
 .title {
@@ -142,5 +144,13 @@ export default {
     justify-content: center;
     margin: 0 auto;
     /* 添加自动外边距 */
+}
+
+.list{
+    height: 40%;
+    width: 20%;
+    background-color: brown;
+    opacity: 0.8;
+    padding-bottom: 10px;
 }
 </style>

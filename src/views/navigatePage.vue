@@ -3,7 +3,7 @@
         <div class="chose">
             <div class="music" @dblclick="gotomusic">music</div>
             <div class="diary">diary</div>
-            <div class="game">game</div>
+            <div class="game" @dblclick="gotogame">game</div>
             <div class="learn" @dblclick="gotolearn">learn</div>
             <div class="crazy">crazy</div>
             <div class="animation" @dblclick="gotoanimation">animation</div>
@@ -22,6 +22,9 @@ export default {
         };
     },
     methods: {
+        gotogame(){
+            this.$router.push('/game')
+        },
         gotoanimation(){
             this.$router.push('/animation');
         },
