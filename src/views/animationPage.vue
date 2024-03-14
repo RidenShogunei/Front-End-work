@@ -1,5 +1,5 @@
 <template>
-    <div class="learn" >
+    <div class="animation" >
         
     </div>
   </template>
@@ -23,9 +23,9 @@
   </script>
   
   <style scoped>
-  .home {
+  .animation {
     /* 之前的样式不变 */
-    background-image: url('../assets/background.jpg');
+    background-image: url('../assets/yaya.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
