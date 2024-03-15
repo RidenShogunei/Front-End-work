@@ -38,6 +38,11 @@ const routes = [
     name: 'game',
     component: () => import('../views/gamePage.vue')
   },
+  {
+    path: '/diary',
+    name: 'diary',
+    component: () => import('../views/diaryPage.vue')
+  },
 ]
 
 const router = createRouter({

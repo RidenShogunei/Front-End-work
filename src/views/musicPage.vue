@@ -12,6 +12,9 @@
                 <source :src="musicurl" type="audio/mpeg">
             </audio>
             <br>
+            <div class="again" @click="rechange">
+                再来十首
+            </div>
         </div>
         <div class="list">
             <div v-for="(song, index) in musiclist" :key="index" class="musicname" @click="changesong(index)">
@@ -38,6 +41,9 @@ export default {
         }
     },
     methods: {
+        rechange(){
+            this.takesong();
+        },
         changesong(index) {
             this.name = this.musiclist[index].name;
             this.pictureurl = this.musiclist[index].pictureurl;
@@ -131,12 +137,15 @@ export default {
 }
 
 .music {
-    height: 40%;
+    height: 50%;
     width: 30%;
     background-color: brown;
     opacity: 0.8;
     padding-bottom: 10px;
     margin: 10px;
+    display: flex; /* 添加flex属性 */
+    align-items: center; /* 添加align-items属性 */
+    flex-direction: column;
 }
 
 .title {
@@ -178,7 +187,7 @@ export default {
 }
 
 .list {
-    height: 40%;
+    height: 50%;
     width: 20%;
     background-color: brown;
     opacity: 0.8;
@@ -206,5 +215,19 @@ export default {
     margin: 0 10px;
     text-align: center;
     background-color: red;
+}
+
+.again{
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    font-size: 25px;
+    color: #ffffff;
+    margin: 20px 20px;
+    text-align: center;
+    border: #ffffff solid 1px;
+    width: 60%;
+    justify-content: center;
 }
 </style>

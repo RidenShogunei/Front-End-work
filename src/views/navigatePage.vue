@@ -2,7 +2,7 @@
     <div class="home">
         <div class="chose">
             <div class="music" @dblclick="gotomusic">music</div>
-            <div class="diary">diary</div>
+            <div class="diary" @dblclick="gotodiary">diary</div>
             <div class="game" @dblclick="gotogame">game</div>
             <div class="learn" @dblclick="gotolearn">learn</div>
             <div class="crazy">crazy</div>
@@ -22,6 +22,9 @@ export default {
         };
     },
     methods: {
+        gotodiary(){
+            this.$router.push('/diary')
+        },
         gotogame(){
             this.$router.push('/game')
         },
