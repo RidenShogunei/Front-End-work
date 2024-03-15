@@ -85,15 +85,6 @@ export default {
     padding: 20px 20px;
 }
 
-:hover.word {
-    font-family: 'Times New Roman', Times, serif;
-    /* 设置字体为 Times New Roman */
-    font-style: italic;
-    /* 设置字体样式为斜体 */
-    color: rgb(15, 13, 13, 0);
-    font-size: 40px;
-}
-
 :hover.wordchange {
     font-family: 'Times New Roman', Times, serif;
     /* 设置字体为 Times New Roman */

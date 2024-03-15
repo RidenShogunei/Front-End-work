@@ -4,15 +4,17 @@
       <table id="minesweeper">
         <tbody>
           <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
-            <td class="gezi" v-for="(col, colIndex) in rows[row]" :key="colIndex" @click="clickCell(rowIndex, colIndex)">
+            <td class="gezi" v-for="(col, colIndex) in row" :key="colIndex" @click="clickCell(rowIndex, colIndex)">
               <div v-if="!col.isRevealed">?</div> <!-- If not revealed, show a question mark. -->
-              <div v-else-if="col.mine">💣</div> <!-- If revealed and it's a mine, show a bomb. -->
-              <div v-else>0</div> <!-- If revealed and it's not a mine, show a zero. -->
+              <div v-else-if="col.mine"><img src="../assets/shibao.jpg" class="img" /></div>
+              <!-- If revealed and it's a mine, show a bomb. -->
+              <div v-else>{{ col.value }}</div> <!-- If revealed and it's not a mine, show a zero. -->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <audio id="mine-sound" src="../assets/badend.wav"></audio>
   </div>
 </template>
 
@@ -27,15 +29,40 @@ export default {
     };
   },
   methods: {
+    count() {
+      this.rows = this.rows.map((row, rowIndex) => {
+        return row.map((cell, colIndex) => {
+          if (cell.mine) {
+            return cell;  // 如果当前格子是雷，跳过。
+          }
+          let minesAround = 0;
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              let newX = rowIndex + dx;
+              let newY = colIndex + dy;
+              // 如果新的位置还在地图内，并且该位置上是地雷
+              if (newX >= 0 && newY >= 0 && newX < this.rowNum && newY < this.colNum && this.rows[newX][newY].mine) {
+                minesAround++;
+              }
+            }
+          }
+          // 返回新的格子对象
+          return { ...cell, value: minesAround };
+        });
+      });
+    },
     clickCell(rowIndex, colIndex) {
       // 标记格子为已揭示
       console.log(rowIndex, colIndex)
-      this.rows[rowIndex].cols[colIndex].isRevealed = true;
-      console.log(this.rows)
+      this.rows[rowIndex][colIndex].isRevealed = true;
+      if (this.rows[rowIndex][colIndex].mine === true) {
+        var sound = document.getElementById('mine-sound');
+        sound.play();
+      }
+
     },
     start() {
-      let rows = Array(this.rowNum).fill().map(() => Array(this.colNum).fill({ mine: false, isRevealed: false }));
-
+      let rows = Array(this.rowNum).fill().map(() => Array(this.colNum).fill().map(() => ({ value: 0, mine: false, isRevealed: false })));
       // 随机分布雷
       let count = 0;
       while (count < this.leiNum) {
@@ -48,6 +75,8 @@ export default {
       }
       // 更新rows
       this.rows = rows;
+      this.count();
+      console.log(this.rows)
     },
     navigate() {
       // 跳转
@@ -99,15 +128,22 @@ export default {
   color: #000000;
   justify-content: center;
   align-items: center;
-  display: flex;
+  display: table;
 
 }
 
 .gezi {
+  height: 25px;
+  width: 25px;
   padding-left: 25px;
   padding-top: 6px;
   padding-bottom: 6px;
   padding-right: 25px;
   border: white solid;
+}
+
+.img {
+  height: 60px;
+  width: 60px;
 }
 </style>
