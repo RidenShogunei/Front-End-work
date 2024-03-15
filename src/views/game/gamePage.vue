@@ -1,12 +1,14 @@
 <template>
   <div class="game">
+    <div class="title">扫雷游戏</div>
     <div class="panzi">
       <table id="minesweeper">
         <tbody>
           <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
             <td class="gezi" v-for="(col, colIndex) in row" :key="colIndex" @click="clickCell(rowIndex, colIndex)">
               <div v-if="!col.isRevealed">?</div> <!-- If not revealed, show a question mark. -->
-              <div v-else-if="col.mine"><img src="../assets/shibao.jpg" class="img" /></div>
+              <div v-else-if="col.mine"><img src="../../assets/shibao.jpg" class="img"
+                  :class="{ animate: isMineExploded }" /></div>
               <!-- If revealed and it's a mine, show a bomb. -->
               <div v-else>{{ col.value }}</div> <!-- If revealed and it's not a mine, show a zero. -->
             </td>
@@ -14,7 +16,7 @@
         </tbody>
       </table>
     </div>
-    <audio id="mine-sound" src="../assets/badend.wav"></audio>
+    <audio id="mine-sound" src="/badend.wav"></audio>
   </div>
 </template>
 
@@ -23,9 +25,10 @@ export default {
   data() {
     return {
       rows: [],
-      rowNum: 10,
-      colNum: 10,
-      leiNum: 10,
+      rowNum: parseInt(this.$route.query.rows),
+      colNum: parseInt(this.$route.query.columns),
+      leiNum: parseInt(this.$route.query.mines),
+      down:0,
     };
   },
   methods: {
@@ -58,10 +61,22 @@ export default {
       if (this.rows[rowIndex][colIndex].mine === true) {
         var sound = document.getElementById('mine-sound');
         sound.play();
+        this.isMineExploded = true;
+        setTimeout(() => {
+          this.isMineExploded = false;
+          this.$router.push('/end')
+        }, 1000);  // 添加动
+        
+      }else{
+        this.down++;
+        if(this.down===this.left){
+          this.$router.push('/win')
+        }
       }
 
     },
     start() {
+      console.log(this.rowNum,this. colNum,this.leiNum)
       let rows = Array(this.rowNum).fill().map(() => Array(this.colNum).fill().map(() => ({ value: 0, mine: false, isRevealed: false })));
       // 随机分布雷
       let count = 0;
@@ -78,13 +93,15 @@ export default {
       this.count();
       console.log(this.rows)
     },
-    navigate() {
-      // 跳转
-      this.$router.push('/mainpage');
-    }
+
   },
-  created() {
-    this.start()
+  mounted() {
+    this.start();
+  },
+  computed:{
+    left(){
+      return this.rowNum*this.colNum-this.leiNum;
+    }
   }
 };
 </script>
@@ -92,7 +109,7 @@ export default {
 <style scoped>
 .game {
   /* 之前的样式不变 */
-  background-image: url('../assets/starhunter.png');
+  background-image: url('../../assets/starhunter.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -109,13 +126,28 @@ export default {
   flex-direction: column;
 }
 
+.title {
+  padding: 20px;
+  display: flex;
+  font-family: 'Times New Roman', Times, serif;
+  /* 设置字体为 Times New Roman */
+  font-style: italic;
+  /* 设置字体样式为斜体 */
+  font-size: 60px;
+  text-align: center;
+  color: #ffffff;
+  justify-content: center;
+  align-items: center;
+}
+
 .panzi {
-  height: 80%;
-  width: 50%;
+  height: 65%;
+  width: 45%;
   background-color: brown;
   opacity: 0.8;
   padding-bottom: 10px;
   margin: 10px;
+  display: flex;
 }
 
 #minesweeper {
@@ -140,10 +172,32 @@ export default {
   padding-bottom: 6px;
   padding-right: 25px;
   border: white solid;
+  background-color: rgb(49, 34, 34);
+  color: white;
+  ;
 }
 
 .img {
   height: 60px;
   width: 60px;
+  object-fit: contain;
+}
+
+.animate {
+  animation: scaleUpAndDown 1.0s ease-in-out both;
+}
+
+@keyframes scaleUpAndDown {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(20);
+    opacity: 1;
+  }
 }
 </style>

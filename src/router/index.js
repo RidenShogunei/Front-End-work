@@ -34,9 +34,24 @@ const routes = [
     component: () => import('../views/animationPage.vue')
   },
   {
+    path: '/enter',
+    name: 'enter',
+    component: () => import('../views/game/enterPage.vue')
+  },
+  {
     path: '/game',
     name: 'game',
-    component: () => import('../views/gamePage.vue')
+    component: () => import('../views/game/gamePage.vue')
+  },
+  {
+    path: '/end',
+    name: 'end',
+    component: () => import('../views/game/endPage.vue')
+  },
+  {
+    path: '/win',
+    name: 'win',
+    component: () => import('../views/game/winPage.vue')
   },
   {
     path: '/diary',

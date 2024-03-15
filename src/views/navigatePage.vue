@@ -26,7 +26,7 @@ export default {
             this.$router.push('/diary')
         },
         gotogame(){
-            this.$router.push('/game')
+            this.$router.push('/enter')
         },
         gotoanimation(){
             this.$router.push('/animation');
