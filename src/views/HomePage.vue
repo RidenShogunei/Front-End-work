@@ -26,7 +26,7 @@ export default {
       .then(response => {
         // 处理返回的数据
         console.log(response.data);
-        this.message=response.data.content;
+        this.message = response.data.content;
         this.loading = false;  // 
       })
       .catch(error => {
@@ -34,6 +34,9 @@ export default {
         this.loading = false;  // 
         console.error(error);
       });
+
+ 
+
   }
 };
 </script>

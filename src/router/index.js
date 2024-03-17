@@ -58,6 +58,11 @@ const routes = [
     name: 'diary',
     component: () => import('../views/diaryPage.vue')
   },
+  {
+    path: '/crazy',
+    name: 'crazy',
+    component: () => import('../views/crazy/crazyPage.vue')
+  },
 ]
 
 const router = createRouter({

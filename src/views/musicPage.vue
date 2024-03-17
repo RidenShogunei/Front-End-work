@@ -38,16 +38,27 @@ export default {
             name: '',
             pictureurl: '',
             musicurl: '',
+            takesongThrottled: null,
         }
     },
     methods: {
-        rechange(){
-            this.takesong();
+        throttle(func, delay) {
+            let lastTime = 0;
+            return function () {
+                let now = new Date();
+                if (now - lastTime > delay) {
+                    func.apply(this, arguments);
+                    lastTime = now;
+                }
+            }
+        },
+        rechange() {
+            this.takesongThrottled();
         },
         changesong(index) {
             this.name = this.musiclist[index].name;
             this.pictureurl = this.musiclist[index].pictureurl;
-            this.musicurl =this.musiclist[index].musicurl;
+            this.musicurl = this.musiclist[index].musicurl;
         },
         fresh(music) {
             this.$store.commit('changemusiclist', music);
@@ -114,7 +125,10 @@ export default {
     mounted() {
         this.takesong();
         this.setDraggable();
-    }
+    },
+    created() {
+        this.takesongThrottled = this.throttle(this.takesong, 1000);
+    },
 }
 </script>
 
@@ -143,8 +157,10 @@ export default {
     opacity: 0.8;
     padding-bottom: 10px;
     margin: 10px;
-    display: flex; /* 添加flex属性 */
-    align-items: center; /* 添加align-items属性 */
+    display: flex;
+    /* 添加flex属性 */
+    align-items: center;
+    /* 添加align-items属性 */
     flex-direction: column;
 }
 
@@ -217,7 +233,7 @@ export default {
     background-color: red;
 }
 
-.again{
+.again {
     font-family: 'Times New Roman', Times, serif;
     /* 设置字体为 Times New Roman */
     font-style: italic;

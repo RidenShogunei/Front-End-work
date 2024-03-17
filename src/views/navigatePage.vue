@@ -5,7 +5,7 @@
             <div class="diary" @dblclick="gotodiary">diary</div>
             <div class="game" @dblclick="gotogame">game</div>
             <div class="learn" @dblclick="gotolearn">learn</div>
-            <div class="crazy">crazy</div>
+            <div class="crazy" @dblclick="gotocrazy">crazy</div>
             <div class="animation" @dblclick="gotoanimation">animation</div>
             <div class="TODO">TODO</div>
             <div class="TODO">TODO</div>
@@ -22,20 +22,23 @@ export default {
         };
     },
     methods: {
-        gotodiary(){
+        gotodiary() {
             this.$router.push('/diary')
         },
-        gotogame(){
+        gotogame() {
             this.$router.push('/enter')
         },
-        gotoanimation(){
+        gotoanimation() {
             this.$router.push('/animation');
         },
-        gotomusic(){
+        gotomusic() {
             this.$router.push('/music');
         },
-        gotolearn(){
-            this.$router.push('/learn')
+        gotolearn() {
+            this.$router.push('/learn');
+        },
+        gotocrazy() {
+            this.$router.push('/crazy');
         },
         setDraggable() {
             interact('.chose').draggable({
@@ -107,7 +110,7 @@ export default {
     background-color: rgba(224, 23, 23, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
@@ -116,7 +119,7 @@ export default {
     background-color: rgba(228, 181, 10, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
@@ -125,7 +128,7 @@ export default {
     background-color: rgba(0, 191, 255, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
@@ -134,40 +137,49 @@ export default {
     background-color: rgba(171, 4, 255, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
 
 .learn {
-    background-color: rgb(255, 255, 255,0.5);
+    background-color: rgb(255, 255, 255, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
-.animation{
+
+.animation {
     background-color: rgba(84, 239, 18, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
+
 .TODO {
     background-color: rgba(41, 27, 27, 0.5);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 40px;
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
-.animation:hover, .music:hover,.diary:hover, .game:hover, .crazy:hover, .learn:hover, .TODO:hover {
+
+.animation:hover,
+.music:hover,
+.diary:hover,
+.game:hover,
+.crazy:hover,
+.learn:hover,
+.TODO:hover {
     background-color: rgba(239, 7, 146, 0.8);
     padding: 60px;
     text-align: center;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 50px;
     color: aqua;
 }
