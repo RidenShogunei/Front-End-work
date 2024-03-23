@@ -1,75 +1,43 @@
 <template>
   <div class="diary">
-    <el-card class="detile">
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu"
-        mode="horizontal"
-        @select="handleSelect"
-      >
+    <el-card class="data">
+      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">写日记</el-menu-item>
         <el-menu-item index="2">搜日记</el-menu-item>
         <el-menu-item index="3">所有日记</el-menu-item>
       </el-menu>
       <div class="write" v-if="index === '1'">
-        <el-input
-          v-model="textarea"
-          style="width: 100%"
-          :rows="10"
-          type="textarea"
-          placeholder="Please input"
-        />
+        <el-input v-model="textarea" style="width: 100%" :rows="10" type="textarea" placeholder="Please input" />
         <el-button style="margin-top: 2%" type="primary" @click="submit">提交</el-button>
       </div>
       <div class="search" v-else-if="index === '2'">
-        <el-date-picker
-          v-model="time"
-          type="date"
-          placeholder="Pick a day"
-          :disabled-date="disabledDate"
-          :shortcuts="shortcuts"
-          :size="size"
-          style="margin-bottom: 2%"
-        />
-        <el-input
-          v-model="searchline"
-          style="width: 100%"
-          :rows="2"
-          type="textarea"
-          placeholder="Please input"
-        />
-        <el-button
-          style="margin-top: 2%; margin-bottom: 2%"
-          type="primary"
-          @click="search"
-          >搜索</el-button
-        >
+        <el-date-picker v-model="time" type="date" placeholder="Pick a day" :disabled-date="disabledDate"
+          :shortcuts="shortcuts" :size="size" style="margin-bottom: 2%" />
+        <el-input v-model="searchline" style="width: 100%" :rows="2" type="textarea" placeholder="Please input" />
+        <el-button style="margin-top: 2%; margin-bottom: 2%" type="primary" @click="search">搜索</el-button>
         <div>结果：</div>
         <el-table :data="searchresult" style="width: 100%" @row-click="rowHandleClick">
-          <el-table-column prop="date" label="Date" width="180" />
-          <el-table-column prop="detile" label="Brief" :formatter="briefFormatter" />
+          <el-table-column prop="time" label="Date" width="180" />
+          <el-table-column prop="data" label="Brief" :formatter="briefFormatter" />
         </el-table>
-        <el-dialog
-          v-model="dialogVisible"
-          title="detile"
-          width="500"
-          @click="dialogVisible = false"
-        >
+        <el-dialog v-model="dialogVisible" title="data" width="500" @click="dialogVisible = false">
           <div class="chose">
-            <p>Date: {{ chosenRow.date }}</p>
-            <p>Detile: {{ chosenRow.detile }}</p>
+            <p>Date: {{ chosenRow.time }}</p>
+            <p>data: {{ chosenRow.data }}</p>
           </div>
         </el-dialog>
       </div>
       <div class="show" v-else-if="index === '3'">
-        <el-table
-          :data="searchresult"
-          style="width: 100%; margin-top: 3%"
-          @row-click="rowHandleClick"
-        >
-          <el-table-column prop="date" label="Date" width="180" />
-          <el-table-column prop="detile" label="Brief" :formatter="briefFormatter" />
+        <el-table :data="searchresult" style="width: 100%; margin-top: 3%" @row-click="rowHandleClick">
+          <el-table-column prop="time" label="Date" width="180" />
+          <el-table-column prop="data" label="Brief" :formatter="briefFormatter" />
         </el-table>
+        <el-dialog v-model="dialogVisible" title="data" width="500" @click="dialogVisible = false">
+          <div class="chose">
+            <p>Date: {{ chosenRow.time }}</p>
+            <p>data: {{ chosenRow.data }}</p>
+          </div>
+        </el-dialog>
       </div>
     </el-card>
   </div>
@@ -78,7 +46,6 @@
 <script setup>
 import { ref, watch } from "vue";
 import axios from "axios";
-
 // 定义状态变量
 let chosenRow = ref({});
 const activeIndex = ref("1");
@@ -92,16 +59,21 @@ const dialogVisible = ref(false);
 // 批量加载数据
 const loadData = () => {
   axios
-    .post("http://localhost:3000/diary/search", {
-      data: time.value,
-      detile: searchline.value,
+    .post("http://47.96.160.149:3000/diary/search", {
+      time: time.value,
+      data: searchline.value,
     })
-    .then((response) => (searchresult.value = response.data))
+    .then((response) => {
+      console.log("返回数据", response.data)
+      searchresult.value = response.data
+    })
     .catch(console.log);
 };
 
 // 监听'index'变化，当其值为 "3"时加载数据
 watch(index, (newVal) => {
+  time.value = "";
+  searchline.value="";
   if (newVal === "3") {
     loadData();
   } else {
@@ -110,10 +82,11 @@ watch(index, (newVal) => {
   }
 });
 const search = () => {
+  console.log(time.value)
   axios
-    .post("http://localhost:3000/diary/search", {
-      data: time.value,
-      detile: searchline.value,
+    .post("http://47.96.160.149:3000/diary/search", {
+      time: time.value,
+      data: searchline.value,
     })
     .then((response) => (searchresult.value = response.data))
     .catch(console.log);
@@ -139,14 +112,23 @@ const handleSelect = (val) => (index.value = val);
 
 // 提交日记
 const submit = () => {
-  const data = textarea.value,
-    time = new Date().toISOString();
-  axios.post("http://localhost:3000/diary/submit", { data, time }).catch(console.log);
+  const data = textarea.value;
+  const currentTime = new Date();
+  const year = currentTime.getFullYear();
+  const month = String(currentTime.getMonth() + 1).padStart(2, '0');
+  const day = String(currentTime.getDate()).padStart(2, '0');
+  const time = `${year}-${month}-${day}`;
+  axios.post("http://47.96.160.149:3000/diary/submit", { data, time }).then(() => {
+    textarea.value = "";
+    alert("提交成功")
+
+  }).catch(console.log);
+
 };
 
 // 格式化呈现文本，超长文本用 '...' 表示
 const briefFormatter = (row) =>
-  row.detile?.slice(0, 10) + (row.detile.length > 10 ? "..." : "");
+  row.data?.slice(0, 10) + (row.data.length > 10 ? "..." : "");
 </script>
 
 <style scoped>
@@ -167,7 +149,8 @@ const briefFormatter = (row) =>
   justify-content: center;
   flex-direction: column;
 }
-.detile {
+
+.data {
   width: 60%;
   height: 60%;
   background-color: rgba(255, 255, 255, 0.5);
