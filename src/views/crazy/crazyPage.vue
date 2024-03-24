@@ -2,7 +2,7 @@
   <div class="crazy">
     <div class="yuanshen" :class="{ 'scale-up': isScaled }" @click="togglePlay">
       <video ref="myVideoRef" width="320" height="240">
-        <source src="../../assets/yuanshen.mp4" type="video/mp4">
+        <source src="../../../public/yuanshen.mp4" type="video/mp4">
       </video>
     </div>
   </div>
