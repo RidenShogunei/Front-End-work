@@ -1,8 +1,7 @@
 <template>
     <div class="main">
         <div class="box-card">
-            <div class="word"><br>欢迎,朋友!既然你访问了这个网站,那代表着,你收到了我的邀请.总之,这个网站是个我空闲时间写着玩的
-                项目,可能会有些bug,不过我在慢慢的完善它.所以,敬请期待!<br> <span class="wordchange" @click="start">NOW WE CAN
+            <div class="word"><br>欢迎,朋友!既然你访问了这个网站,那代表着,你收到了我的邀请.总之,这个网站是个我空闲时间写着玩的项目,可能会有些bug,不过我在慢慢的完善它.所以,敬请期待!<br> <span class="wordchange" @click="start">NOW WE CAN
                     START=====></span></div>
 
         </div>
@@ -96,5 +95,22 @@ export default {
     /* 设置初始透明度为 0 */
     transition: opacity 0.5s ease-in-out;
     /* 添加透明度的过渡效果 */
+}
+
+@media only screen and (max-width: 768px) {
+   /* 手机端样式 */
+   .wordchange {
+    font-family: 'Times New Roman', Times, serif;
+    /* 设置字体为 Times New Roman */
+    font-style: italic;
+    /* 设置字体样式为斜体 */
+    color: rgb(255, 0, 0);
+    font-size: 40px;
+    opacity: 1;
+    /* 设置初始透明度为 0 */
+    transition: opacity 0.5s ease-in-out;
+    /* 添加透明度的过渡效果 */
+}
+   /* 更多样式规则 */
 }
 </style>
