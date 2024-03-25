@@ -1,15 +1,15 @@
 <template>
     <div class="home">
         <div class="chose">
-            <div class="music" @dblclick="gotomusic">music</div>
-            <div class="diary" @dblclick="gotodiary">diary</div>
-            <div class="game" @dblclick="gotogame">game</div>
-            <div class="learn" @dblclick="gotolearn">learn</div>
-            <div class="crazy" @dblclick="gotocrazy">crazy</div>
-            <div class="animation" @dblclick="gotoanimation">animation</div>
-            <div class="TODO">TODO</div>
-            <div class="TODO">TODO</div>
-            <div class="TODO">TODO</div>
+            <div class="music" @dblclick="gotoPage('music')">music</div>
+            <div class="diary" @dblclick="gotoPage('Message')">Message</div>
+            <div class="game" @dblclick="gotoPage('enter')">game</div>
+            <div class="learn" @dblclick="gotoPage('learn')">learn</div>
+            <div class="crazy" @dblclick="gotoPage('crazy')">crazy</div>
+            <div class="animation" @dblclick="gotoPage('animation')">animation</div>
+            <div class="Blog" @dblclick="gotoPage('blog')">Blog</div>
+            <div class="camera">Camera</div>
+            <div class="person" @dblclick="gotoPage('person')">personal</div>
         </div>
     </div>
 </template>
@@ -18,27 +18,11 @@
 import interact from 'interactjs';
 export default {
     data() {
-        return {
-        };
+        return {};
     },
     methods: {
-        gotodiary() {
-            this.$router.push('/diary')
-        },
-        gotogame() {
-            this.$router.push('/enter')
-        },
-        gotoanimation() {
-            this.$router.push('/animation');
-        },
-        gotomusic() {
-            this.$router.push('/music');
-        },
-        gotolearn() {
-            this.$router.push('/learn');
-        },
-        gotocrazy() {
-            this.$router.push('/crazy');
+        gotoPage(page) {
+            this.$router.push('/' + page);
         },
         setDraggable() {
             interact('.chose').draggable({
@@ -160,8 +144,8 @@ export default {
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
 
-.TODO {
-    background-color: rgba(41, 27, 27, 0.5);
+.Blog {
+    background-color: rgba(214, 27, 130, 0.5);
     padding: 60px;
     text-align: center;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -169,6 +153,25 @@ export default {
     transition: background-color 0.5s ease, font-size 0.5s ease;
 }
 
+.camera {
+    background-color: rgba(49, 27, 214, 0.5);
+    padding: 60px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 40px;
+    transition: background-color 0.5s ease, font-size 0.5s ease;
+}
+.person {
+    background-color: rgba(41, 27, 27, 0.5);
+    padding: 60px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 40px;
+    transition: background-color 0.5s ease, font-size 0.5s ease;
+}
+.person:hover,
+.camera:hover,
+.Blog:hover,
 .animation:hover,
 .music:hover,
 .diary:hover,

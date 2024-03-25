@@ -2,9 +2,9 @@
   <div class="diary">
     <el-card class="data">
       <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1">写日记</el-menu-item>
-        <el-menu-item index="2">搜日记</el-menu-item>
-        <el-menu-item index="3">所有日记</el-menu-item>
+        <el-menu-item index="1">写留言</el-menu-item>
+        <el-menu-item index="2">搜留言</el-menu-item>
+        <el-menu-item index="3">所有留言</el-menu-item>
       </el-menu>
       <div class="write" v-if="index === '1'">
         <el-input v-model="textarea" style="width: 100%" :rows="10" type="textarea" placeholder="Please input" />
@@ -110,7 +110,7 @@ const disabledDate = (time) => time.getTime() > Date.now();
 // 标签选择处理函数，改变激活标签对应的变量值 'index'
 const handleSelect = (val) => (index.value = val);
 
-// 提交日记
+// 提交留言
 const submit = () => {
   const data = textarea.value;
   const currentTime = new Date();

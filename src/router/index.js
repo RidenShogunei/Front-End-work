@@ -54,8 +54,8 @@ const routes = [
     component: () => import('../views/game/winPage.vue')
   },
   {
-    path: '/diary',
-    name: 'diary',
+    path: '/Message',
+    name: 'Message',
     component: () => import('../views/diaryPage.vue')
   },
   {
@@ -63,6 +63,30 @@ const routes = [
     name: 'crazy',
     component: () => import('../views/crazy/crazyPage.vue')
   },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: () => import('../views/Blog/blogPage.vue')
+  },
+  {
+    path: '/password',
+    name: 'password',
+    component: () => import('../views/personal/passwordPage.vue')
+  },
+  {
+    path: '/person',
+    name: 'person',
+    component: () => import('../views/personal/personalPage.vue'),
+    beforeEnter: (to, from, next) => {
+      // 检查用户是否是从密码输入页面过来的
+      if (from.path === '/password') {
+        next();
+      } else {
+        // 否则，重定向到密码输入页面
+        next('/password');
+      }
+    },
+  }
 ]
 
 const router = createRouter({
