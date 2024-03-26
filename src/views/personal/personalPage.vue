@@ -3,43 +3,29 @@
         <el-card class="data">
             <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="1">写文章</el-menu-item>
-                <el-menu-item index="2">搜文章</el-menu-item>
-                <el-menu-item index="3">所有文章</el-menu-item>
+                <el-menu-item index="2">所有文章</el-menu-item>
             </el-menu>
             <div class="write" v-if="index === '1'">
-                <el-input v-model="title" style="width: 100%" :rows="1" type="textarea" placeholder="Please input" />
+                <el-input v-model="title" style="width: 100%" :rows="1" type="textarea" placeholder="title" />
+                <br>
+                <!-- 在这里添加你的选择框 -->
+                <el-checkbox v-model="show" label="是否公开"></el-checkbox>
                 <br>
                 <el-input v-model="textarea" style="width: 100%" :rows="10" type="textarea"
                     placeholder="Please input" />
                 <el-button style="margin-top: 2%" type="primary" @click="submit">提交</el-button>
             </div>
-            <div class="search" v-else-if="index === '2'">
-                <el-date-picker v-model="time" type="date" placeholder="Pick a day" :disabled-date="disabledDate"
-                    :shortcuts="shortcuts" :size="size" style="margin-bottom: 2%" />
-                <el-input v-model="searchline" style="width: 100%" :rows="2" type="textarea"
-                    placeholder="Please input" />
-                <el-button style="margin-top: 2%; margin-bottom: 2%" type="primary" @click="search">搜索</el-button>
-                <div>结果：</div>
-                <el-table :data="searchresult" style="width: 100%" @row-click="rowHandleClick">
-                    <el-table-column prop="time" label="Date" width="180" />
-                    <el-table-column prop="data" label="Brief" :formatter="briefFormatter" />
-                </el-table>
-                <el-dialog v-model="dialogVisible" title="data" width="500" @click="dialogVisible = false">
-                    <div class="chose">
-                        <p>Date: {{ chosenRow.time }}</p>
-                        <p>data: {{ chosenRow.data }}</p>
-                    </div>
-                </el-dialog>
-            </div>
-            <div class="show" v-else-if="index === '3'">
+            <div class="show" v-else-if="index === '2'">
                 <el-table :data="searchresult" style="width: 100%; margin-top: 3%" @row-click="rowHandleClick">
                     <el-table-column prop="time" label="Date" width="180" />
-                    <el-table-column prop="data" label="Brief" :formatter="briefFormatter" />
+                    <el-table-column prop="title" label="Title" />
+                    <!--更改prop为“title”和label为“Title”，并假设你有一个名为titleFormatter的方法可以格式化标题 -->
                 </el-table>
-                <el-dialog v-model="dialogVisible" title="data" width="500" @click="dialogVisible = false">
+                <el-dialog v-model="dialogVisible" title="正文" width="80%" @click="dialogVisible = false">
                     <div class="chose">
-                        <p>Date: {{ chosenRow.time }}</p>
-                        <p>data: {{ chosenRow.data }}</p>
+                        <p style="text-align: left; font-size: small;">Date: {{ chosenRow.time }}</p>
+                        <h4 style="text-align: center; font-size: large;">{{ chosenRow.title }}</h4>
+                        <p style="text-align: center; font-size: small;">{{ chosenRow.content }}</p>
                     </div>
                 </el-dialog>
             </div>
@@ -52,6 +38,7 @@ import { ref, watch } from "vue";
 import axios from "axios";
 import { inject } from 'vue'
 const baseUrl = inject('baseUrl')
+const show = ref("false");
 // 定义状态变量
 let chosenRow = ref({});
 const activeIndex = ref("1");
@@ -66,9 +53,10 @@ const dialogVisible = ref(false);
 // 批量加载数据
 const loadData = () => {
     axios
-        .post(`${baseUrl}/person/search`, {
+        .post(`${baseUrl}/person/get`, {
             time: time.value,
             data: searchline.value,
+            showornot: ""
         })
         .then((response) => {
             console.log("返回数据", response.data)
@@ -81,29 +69,14 @@ const loadData = () => {
 watch(index, (newVal) => {
     time.value = "";
     searchline.value = "";
-    if (newVal === "3") {
+    if (newVal === "2") {
         loadData();
     } else {
         time.value = "";
         searchresult.value = "";
     }
 });
-const search = () => {
-    console.log(time.value)
-    axios
-        .post(`${baseUrl}/person/search`, {
-            time: time.value,
-            data: searchline.value,
-        })
-        .then((response) => (searchresult.value = response.data))
-        .catch(console.log);
-};
-// 定义短期内时间的快捷选项
-const shortcuts = ["Today", "Yesterday", "A week ago"].map((text, i) => {
-    const value = new Date();
-    value.setDate(value.getDate() - i);
-    return { text, value };
-});
+
 
 // 处理被点击行的行为，将其设为选中行并打开对话窗口
 const rowHandleClick = (row) => {
@@ -111,8 +84,6 @@ const rowHandleClick = (row) => {
     dialogVisible.value = true;
 };
 
-// 禁止选择未来的日期
-const disabledDate = (time) => time.getTime() > Date.now();
 
 // 标签选择处理函数，改变激活标签对应的变量值 'index'
 const handleSelect = (val) => (index.value = val);
@@ -125,19 +96,17 @@ const submit = () => {
     const month = String(currentTime.getMonth() + 1).padStart(2, '0');
     const day = String(currentTime.getDate()).padStart(2, '0');
     const time = `${year}-${month}-${day}`;
-    const mytitle=title.value;
-    axios.post(`${baseUrl}/person/submit`, { data, time,mytitle }).then(() => {
+    const mytitle = title.value;
+    const showornot = show.value;
+    axios.post(`${baseUrl}/person/submit`, { data, time, mytitle, showornot }).then(() => {
         textarea.value = "";
-        title.value="";
+        title.value = "";
         alert("提交成功")
 
     }).catch(console.log);
 
 };
 
-// 格式化呈现文本，超长文本用 '...' 表示
-const briefFormatter = (row) =>
-    row.data?.slice(0, 10) + (row.data.length > 10 ? "..." : "");
 </script>
 
 <style scoped>

@@ -1,8 +1,10 @@
 <template>
     <div class="blog">
         <el-card>
+            <div class="my"></div>
             <el-descriptions class="margin-top" title="个人简介" :column="3" :size="size" border>
                 <template #extra>
+                    
                     <el-button type="primary" @click="copy">复制信息</el-button>
                 </template>
                 <el-descriptions-item>
@@ -61,22 +63,43 @@
                     曹安公路4800号
                 </el-descriptions-item>
             </el-descriptions>
-            
+            <div class="show">
+                <el-table :data="searchresult" style="width: 100%; margin-top: 3%" @row-click="rowHandleClick">
+                    <el-table-column prop="time" label="Date" width="180" />
+                    <el-table-column prop="title" label="Title" />
+                    <!--更改prop为“title”和label为“Title”，并假设你有一个名为titleFormatter的方法可以格式化标题 -->
+                </el-table>
+                <el-dialog v-model="dialogVisible" title="正文" width="80%" @click="dialogVisible = false">
+                    <div class="chose">
+                        <p style="text-align: left; font-size: small;">Date: {{ chosenRow.time }}</p>
+                        <h4 style="text-align: center; font-size: large;">{{ chosenRow.title }}</h4>
+                        <p style="text-align: center; font-size: small;">{{ chosenRow.content }}</p>
+                    </div>
+                </el-dialog>
+                <goback></goback>
+            </div>
         </el-card>
 
     </div>
 </template>
 
 <script setup>
+import goback from "../../components/backItem.vue";
 import { computed, ref } from 'vue'
+import { inject } from 'vue'
+const baseUrl = inject('baseUrl')
+let chosenRow = ref({});
+import axios from "axios";
+import { onMounted } from 'vue'
 import {
     Iphone,
     OfficeBuilding,
     Tickets,
     User,
 } from '@element-plus/icons-vue'
-
+let searchresult = ref([]);
 const size = ref('default')
+const dialogVisible = ref(false);
 const iconStyle = computed(() => {
     const marginMap = {
         large: '8px',
@@ -87,7 +110,21 @@ const iconStyle = computed(() => {
         marginRight: marginMap[size.value] || marginMap.default,
     }
 })
-
+const rowHandleClick = (row) => {
+    chosenRow.value = row;
+    dialogVisible.value = true;
+};
+const get = () => {
+    axios
+        .post(`${baseUrl}/person/get`, {
+            showornot: "1"
+        })
+        .then((response) => {
+            console.log("返回数据", response.data)
+            searchresult.value = response.data
+        })
+        .catch(console.log);
+};
 const copy = () => {
     navigator.clipboard.writeText('姓名:陈瑾旭,电话:13870105832').then(() => {
         alert("复制成功！");
@@ -95,6 +132,10 @@ const copy = () => {
         alert('出错了，未能复制！', err);
     });
 }
+
+onMounted(() => {
+    get();
+});
 </script>
 
 <style scoped>
