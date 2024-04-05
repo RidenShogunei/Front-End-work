@@ -14,6 +14,6 @@ const app = createApp(App)
   .use(ElementPlus)
   .use(Antd);
 app.config.globalProperties.$axios = axios;
-app.provide('baseUrl', 'http://47.96.160.149:3000');
+app.provide('baseUrl', 'https://chenjinxu.top:3000');
 app.mount('#app');
 document.title = "陈同学的实验站";

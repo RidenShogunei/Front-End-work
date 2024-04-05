@@ -59,7 +59,7 @@ const dialogVisible = ref(false);
 // 批量加载数据
 const loadData = () => {
   axios
-    .post("http://47.96.160.149:3000/diary/search", {
+    .post("https://chenjinxu.top:3000/diary/search", {
       time: time.value,
       data: searchline.value,
     })
@@ -84,7 +84,7 @@ watch(index, (newVal) => {
 const search = () => {
   console.log(time.value)
   axios
-    .post("http://47.96.160.149:3000/diary/search", {
+    .post("https://chenjinxu.top:3000/diary/search", {
       time: time.value,
       data: searchline.value,
     })
@@ -118,7 +118,7 @@ const submit = () => {
   const month = String(currentTime.getMonth() + 1).padStart(2, '0');
   const day = String(currentTime.getDate()).padStart(2, '0');
   const time = `${year}-${month}-${day}`;
-  axios.post("http://47.96.160.149:3000/diary/submit", { data, time }).then(() => {
+  axios.post("https://chenjinxu.top:3000/diary/submit", { data, time }).then(() => {
     textarea.value = "";
     alert("提交成功")
 
